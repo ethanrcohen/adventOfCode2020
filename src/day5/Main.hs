@@ -26,6 +26,16 @@ part1 s = maximum . map ( getId  . getSeat . splitToVertAndHorizontal) $ lines s
 getId :: (Int, Int) -> Int
 getId (row, col) = 8 * row + col
 
+part2acc :: (Int, Int, S.Set Int) -> Int -> (Int, Int, S.Set Int)
+part2acc (min, max, set) x 
+  | x > max = (min, x, S.union set (S.fromList [max+1 .. x-1]))
+  | x < min = (x, max, S.union set (S.fromList [x+1 .. min-1]))
+  | otherwise = (min, max,  (S.delete x set))
+
+part22 :: String -> Int
+part22 s = let seats =  map (getId . getSeat . splitToVertAndHorizontal) (lines s) 
+            in  (\(_, _, set) -> head (S.toList set)) $  foldl part2acc (head seats, head seats, (S.fromList [])) (tail seats)
+
 part2 :: String -> Int
 part2 s = let seats =  map (getId . getSeat . splitToVertAndHorizontal) (lines s);
               seatRange = [minimum seats .. maximum seats];
@@ -36,3 +46,4 @@ main = do
         input <- readFile "input.txt"
         print $ "part 1: " ++ show (part1 input)
         print $ "part 2: " ++ show (part2 input)
+        print $ "part 2 with folds: " ++ show (part22 input)
