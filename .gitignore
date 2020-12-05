@@ -11,4 +11,5 @@
 *.hi
 *.o
 *.txt
-
+.stack-work/
+*~
