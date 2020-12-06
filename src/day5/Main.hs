@@ -19,22 +19,19 @@ getSeat (vert, horz) = (row, col)
         where row = binaryPartitionWithCharacters 'F' 'B' 0 127 vert
               col = binaryPartitionWithCharacters 'L' 'R' 0 7 horz 
 
-part1 :: String -> Int
-part1 s = maximum . map ( getId  . getSeat . splitToVertAndHorizontal) $ lines s 
-
-
 getId :: (Int, Int) -> Int
 getId (row, col) = 8 * row + col
 
-part2acc :: (Int, Int, S.Set Int) -> Int -> (Int, Int, S.Set Int)
-part2acc (min, max, set) x 
+part2acc :: (Int, Int, S.Set Int) -> String -> (Int, Int, S.Set Int)
+part2acc (min, max, set) s 
   | x > max = (min, x, S.union set (S.fromList [max+1 .. x-1]))
   | x < min = (x, max, S.union set (S.fromList [x+1 .. min-1]))
   | otherwise = (min, max,  (S.delete x set))
+  where x = getId . getSeat . splitToVertAndHorizontal $ s
 
-part22 :: String -> Int
-part22 s = let seats =  map (getId . getSeat . splitToVertAndHorizontal) (lines s) 
-            in  (\(_, _, set) -> head (S.toList set)) $  foldl part2acc (head seats, head seats, (S.fromList [])) (tail seats)
+part2Folds :: String -> Int
+part2Folds s = let x:xs = lines s; first = getId . getSeat . splitToVertAndHorizontal $ x in
+               (\(_, _, set) -> head (S.toList set)) $ foldl part2acc (first, first, (S.fromList [])) xs
 
 part2 :: String -> Int
 part2 s = let seats =  map (getId . getSeat . splitToVertAndHorizontal) (lines s);
@@ -42,8 +39,11 @@ part2 s = let seats =  map (getId . getSeat . splitToVertAndHorizontal) (lines s
               seatSet = S.fromList seats in
                  head ( filter (\x -> not $  x `S.member` seatSet ) seatRange )
 
+part1 :: String -> Int
+part1 s = maximum . map ( getId  . getSeat . splitToVertAndHorizontal) $ lines s 
+
 main = do 
         input <- readFile "input.txt"
         print $ "part 1: " ++ show (part1 input)
         print $ "part 2: " ++ show (part2 input)
-        print $ "part 2 with folds: " ++ show (part22 input)
+        print $ "part 2 with folds: " ++ show (part2Folds input)
