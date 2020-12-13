@@ -23,6 +23,7 @@ dependencies:
 - base >= 4.7 && < 5
 - split
 - containers
+- regex-tdfa
 
 library:
   source-dirs: src
@@ -81,6 +82,26 @@ executables:
   day6:
     main:                Main.hs
     source-dirs:         src/day6
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - adventOfCode2020
+  
+  day7:
+    main:                Main.hs
+    source-dirs:         src/day7
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - adventOfCode2020
+  
+  day8:
+    main:                Main.hs
+    source-dirs:         src/day8
     ghc-options:
     - -threaded
     - -rtsopts
