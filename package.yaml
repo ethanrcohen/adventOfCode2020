@@ -109,3 +109,23 @@ executables:
     dependencies:
     - adventOfCode2020
   
+  day9:
+    main:                Main.hs
+    source-dirs:         src/day9
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - adventOfCode2020
+  
+  day10:
+    main:                Main.hs
+    source-dirs:         src/day10
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - adventOfCode2020
+  
