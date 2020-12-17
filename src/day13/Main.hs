@@ -25,6 +25,12 @@ getEarliestTime earliest = minimum . catMaybes . foldr (\id acc -> (find (>= ear
 getArrivals :: Int -> [Int]
 getArrivals id = map (*id) [1..]
 
+-- I just put this into wolfram alpha
+part2 :: String -> [(Int, Maybe Int)] 
+part2 = let (_, maybeIds) = parseInput s in 
+            filter (\x(_,x) -> isJust x) (zip [0..] maybeIds)
+
 main = do 
         input <- readFile "input.txt"
-        print "foo"
+        print $ "part1: " ++ show (part1 input)
+        print $ "part2: solve in wolfram alpha: " ++ show (part2 input)
